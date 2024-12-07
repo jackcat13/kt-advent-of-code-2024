@@ -24,7 +24,10 @@ fun main() {
             val based = operation.toBase(operators.size, operatorsNumber.toInt())
             val operatorsOption = based.map { it.toString().toInt() }.map { operators[it] }
             val operatorIter = operatorsOption.iterator()
-            val equationResult = items.reduce { acc, i -> operatorIter.next().invoke(acc, i) }
+            val equationResult = items.reduce { acc, i ->
+                if (acc > testValue) return@filter false
+                operatorIter.next().invoke(acc, i)
+            }
             if (equationResult == testValue) return@filter true
         }
         false
@@ -39,7 +42,7 @@ private fun Int.toBase(base: Int, maxSize: Int): String {
     var sum: Long = 0
     var i: Long = 1
     while (input > 0) {
-        sum += (input%base)*i
+        sum += (input % base) * i
         i *= 10
         input /= base
     }
